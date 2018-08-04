@@ -1,0 +1,173 @@
+						Git
+
+$git config - main tool fo git manipulation and configuration
+
+1. /etc/gitconfig - contain common values for all users of OS and new repos. If during boot execute command git config --system all parameters would be stored in this file.
+2. `/.gitconfig or `/.config/git/config - keeps settings for curren user. Used with parameter --global
+3. config inside .git/config in current repo, keeps settings current repo.
+
+.git/config >> /etc/gitconfig (priority)
+
+$ git config --global user.name "Paul Glad" - set user info
+$ git config --global core.editor emacs - set default text editor
+$ git config --list - browse all settings
+
+$ git config --list
+user.name=John Doe
+user.email=johndoe@example.com
+color.status=auto
+
+$ git config <key> - common command to check settings for key value
+
+Files in GIT:
+
+1. Not indexed in local store
+2. Indexed in local repo
+3. Indexed in remote server
+
+Indexed - file what system keep tracking action with it (git commit)
+
+$ git status
+$ touch newfile
+$ git status
+$ git add newfile
+$ git status -s
+$ git rm file
+
+.gitignore - file for ignoring 
+
+git add - adding file to the index
+
+	-n --dry-run - files would not be added
+	-f --force - adding ignored files
+
+Examples:
+
+$ git add Documentation/ \*.txt - adding al txt files from Documentation directory
+$ git add git-*.sh  - adding all git scripts
+
+
+git rm [options] <file> ... 
+	
+	-f --force 
+	-n --dry-run
+	-r  - recursively 
+	--cached - remove only indexes, files would not be removed
+
+Examples:
+
+$ git rm Documentation/ \*.txt  
+$ git rm --cached file.txt - remove file from index
+
+git commit [options] [<file>...]
+
+	-a --all - all files would be commited, what were modified and removed, but new files what were not added to index, would not be commited
+	-m <msg> --message=<msg> - message for current commit
+	--amend - change new commit
+	<file> - commits only changes in files 
+
+Examples:
+
+$ rm goodbye.c ; git commit -a  - make commit in all files
+$ git commit Makefile - make commit only in Makefile
+
+Move to another brunch:
+
+$ git branch mybranch
+$ git checkout -b my branch
+
+$ git checkout -b mybranch
+
+git checkout [options] [branch]/<commitj>/<tag>  - allows to switch between branches (commits, tegs) or recover files from working catalog
+
+git checkout [options] <file_name_to_restore>
+	-f --force - allows to switch between branches, even if state of files different, what was set as HEAD. Could be used for cancelation of local changes.
+	-b <new_branch> - create new branch
+
+Examples:
+
+$ git checkout master - switch to another branch
+$ git checkout HEAD - switch to commit with tag HEAD
+$ git checkout HEAD~4 - switch to commit, previous HEAD on 4 steps
+$ git log --grep="Commit message fragment"
+$ git checkout b20eb8db8daf5fcec3ceb191c6b9b25507376ca  - find hash of the commit and swith to it
+$ git checkout -- file.txt - cancel all not commited changes
+
+
+git fetch - download objects and links from remote repo
+
+git fetch [<options>] [<repository> [<refspec>…​]]
+git fetch [<options>] <group>
+git fetch --multiple [<options>] [(<repository> | <group>)…​]
+git fetch --all [<options>]
+
+	--all - download all from remote repo
+	-t --tags - download all tags from remote repo
+
+Examples:
+
+$ git fetch origin - update state all branches accordingly state origin
+$ git fetch -t - download tags
+
+git pull - download and sync with another repo or branch
+
+git pull [options] [<repository> [<respec>...]]
+
+	--no-edit - get automatically generated msg(not recommended)
+	--no-tags - by defualt tags for objects what downloaded from remote repo, extracted and saved locally. With this key, tags would not be downloaded
+	<repository> - remote repo, what needed for sync. It could be URL or name of repo 
+	<refspec> - define what links need to load and what local links to update. By defualt links were taken from variable remote.<repository>.fetch
+
+Examples:
+
+$ git pull, git pull origin - update followed branches of cloned repo, and make merge with current
+$ git pull origin next - make merge current branch with remote
+
+
+git push - Update links on remote repo with linked objects
+
+git push [--all | --mirror | --tags] [--follow-tags] [--atomic] [-n | --dry-run] [--receive-pack=<git-receive-pack>]
+	   [--repo=<repository>] [-f | --force] [-d | --delete] [--prune] [-v | --verbose]
+	   [-u | --set-upstream] [--push-option=<string>]
+	   [--[no-]signed|--sign=(true|false|if-asked)]
+	   [--force-with-lease[=<refname>[:<expect>]]]
+	   [--no-verify] [<repository> [<refspec>…​]]
+
+	<repository> - name or URL remote repo, on what you need to load data
+	<refspec>... - shows what link need to update accordignly what object
+	--all - load all branches (refs/heads/)
+	--delete - remove all links from remote repo
+	-f --force 
+
+Examples:
+
+$ git push
+$ git push origin branch_name - load changes to branch_name in remote repo
+
+git diff
+
+a) Different ways to check working branch
+$ git diff - changes in work space was not commited
+$ git diff --cached - changes between index and last commit, what would be commited if you run "git commit" without key "-a"
+$ git diff HEAD - changes in work space from moment of last coomit, what would be commited if you run "git commit -a"
+
+b) Сomparison with arbitrary commit
+$ git diff test - instead current branch would be with "test"
+$ git diff HEAD -- ./test - instead comparison with "test" we compare with current branch, but restricting with file test
+$ git diff HEAD^ HEAD - comparison between last commit and next to last commit
+
+c) Comparison of branches
+$ git diff topic master - changes of branches topic and master
+$ git diff topic..master - the same
+$ git diff topic...master - changes what happen in branch master after topic was created
+
+d) Restriction of output of cmd git diff
+$ git diff --diff-filter=MRC - shows only modified, renamed or copied(Modification, rename, copy), but not added or removed
+$ git diff --name-status - shows only view of changes but not diff
+$ git diff arch/i386 include/asm-i386 - restrict output of git diff 
+
+
+
+
+Take a look $ git stash
+			$ git log

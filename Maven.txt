@@ -1,0 +1,14 @@
+Welcom with Maven
+
+1. Maven it is framework for automation building the projects in java.
+2. It allows to generate skeleton.
+3. Mavens allows to manipulate dependencies as well inside as importing outside libraries from huge repository.
+
+		Key positions.
+
+1. Description of project - pom.xml .
+2. Group project, artefact, version.
+3. Repos and dependencies.
+4.
+
+mvn archytype:generate
